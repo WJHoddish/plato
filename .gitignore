@@ -30,3 +30,18 @@
 *.exe
 *.out
 *.app
+
+# IDE
+bin/
+lib/
+build/
+install/
+cmake-build-debug/
+cmake-build-release/
+cmake-build-relwithdebinfo/
+.idea/
+.vscode/
+
+# Python
+__pycache__/
+*.pyc
