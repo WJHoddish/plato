@@ -1,3 +1,3 @@
 # Plato
 
-A private chatroom for lovers developed by Qt.
+A chatroom developed by Qt

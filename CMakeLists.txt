@@ -1,6 +1,15 @@
 cmake_minimum_required( VERSION 3.19 )
 project( plato )
 
+# Qt cmake (jiaheng 2021.07.15)
+set( CMAKE_PREFIX_PATH D:/dev/Qt/6.1.2/mingw81_64/lib/cmake )
+
+# vulkan (jiaheng 2021.07.16)
+set( VULKAN_HOME D:/dev/VulkanSDK/1.2.182.0 )
+
+set( Vulkan_INCLUDE_DIR ${VULKAN_HOME}/Include )
+set( Vulkan_LIBRARY ${VULKAN_HOME}/Lib )
+
 set( CMAKE_CXX_STANDARD 14 )
 set( CMAKE_AUTOMOC ON )
 set( CMAKE_AUTORCC ON )
@@ -10,14 +19,9 @@ set( QT_VERSION 6 )
 set( REQUIRED_LIBS Core Gui Widgets )
 set( REQUIRED_LIBS_QUALIFIED Qt6::Core Qt6::Gui Qt6::Widgets )
 
-# custom
-include_directories( include )
-
-set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../install/lib )
-set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../install/lib )
-set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../install/bin )
-
-set( CMAKE_PREFIX_PATH D:/dev/Qt/6.1.2/mingw81_64/lib/cmake )
+set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/install/lib )
+set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/install/lib )
+set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/install/bin )
 
 add_executable( ${PROJECT_NAME} main.cpp )
 
@@ -56,3 +60,20 @@ if ( WIN32 )
                 "$<TARGET_FILE_DIR:${PROJECT_NAME}>" )
     endforeach ( QT_LIB )
 endif ()
+
+include_directories(
+        include
+)
+
+function( gtest_folder name main )
+    aux_source_directory( ${name} DIR_${name} )
+    add_executable( ${name} ${main} ${DIR_${name}} )
+
+    set( INDEX 2 )
+    while ( INDEX LESS ${ARGC} )
+        target_link_libraries( ${name} ${ARGV${INDEX}} )
+        math( EXPR INDEX "${INDEX} + 1" )
+    endwhile ()
+endfunction()
+
+add_subdirectory( test )
