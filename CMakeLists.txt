@@ -23,7 +23,8 @@ set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/install/lib )
 set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/install/lib )
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/install/bin )
 
-add_executable( ${PROJECT_NAME} main.cpp )
+aux_source_directory( . DIR_SRCS )
+add_executable( ${PROJECT_NAME} ${DIR_SRCS} )
 
 if ( NOT CMAKE_PREFIX_PATH )
     message( WARNING "CMAKE_PREFIX_PATH is not defined, you may need to set it "

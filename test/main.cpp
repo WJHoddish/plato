@@ -5,7 +5,21 @@
 
 #include <gtest/gtest.h>
 
+namespace plt {
+
+//
+
+int    argc;
+char** argv;
+
+}  // namespace plt
+
 int main(int argc, char** argv) {
   testing::InitGoogleTest(&argc, argv);
+
+  // init global vars
+  plt::argc = argc;
+  plt::argv = argv;
+
   return RUN_ALL_TESTS();
 }
