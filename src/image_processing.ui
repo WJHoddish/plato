@@ -3,18 +3,18 @@
     <author/>
     <comment/>
     <exportmacro/>
-    <class>Test</class>
-    <widget class="QWidget" name="Test">
+    <class>ImageProcessing</class>
+    <widget class="QMainWindow" name="ImageProcessing">
         <property name="geometry">
             <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>400</width>
-                <height>300</height>
+                <width>800</width>
+                <height>450</height>
             </rect>
         </property>
         <property name="windowTitle">
-            <string>Test</string>
+            <string>ImageProcessing</string>
         </property>
     </widget>
     <pixmapfunction/>

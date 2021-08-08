@@ -23,12 +23,13 @@ set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/install/lib )
 set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/install/lib )
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/install/bin )
 
-aux_source_directory( . DIR_SRCS )
-add_executable( ${PROJECT_NAME} ${DIR_SRCS} )
+#
+aux_source_directory( ./src DIR_SRCS )
+add_executable( ${PROJECT_NAME} ${DIR_SRCS} main.cpp )
 
 if ( NOT CMAKE_PREFIX_PATH )
     message( WARNING "CMAKE_PREFIX_PATH is not defined, you may need to set it "
-            "(-DCMAKE_PREFIX_PATH=\"path/to/Qt/lib/cmake\" or -DCMAKE_PREFIX_PATH=/usr/include/{host}/qt{version}/ on Ubuntu)" )
+             "(-DCMAKE_PREFIX_PATH=\"path/to/Qt/lib/cmake\" or -DCMAKE_PREFIX_PATH=/usr/include/{host}/qt{version}/ on Ubuntu)" )
 endif ()
 
 find_package( Qt${QT_VERSION} COMPONENTS ${REQUIRED_LIBS} REQUIRED )
@@ -47,34 +48,21 @@ if ( WIN32 )
     endif ()
     if ( EXISTS "${QT_INSTALL_PATH}/plugins/platforms/qwindows${DEBUG_SUFFIX}.dll" )
         add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E make_directory
-                "$<TARGET_FILE_DIR:${PROJECT_NAME}>/plugins/platforms/" )
+                            COMMAND ${CMAKE_COMMAND} -E make_directory
+                            "$<TARGET_FILE_DIR:${PROJECT_NAME}>/plugins/platforms/" )
         add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E copy
-                "${QT_INSTALL_PATH}/plugins/platforms/qwindows${DEBUG_SUFFIX}.dll"
-                "$<TARGET_FILE_DIR:${PROJECT_NAME}>/plugins/platforms/" )
+                            COMMAND ${CMAKE_COMMAND} -E copy
+                            "${QT_INSTALL_PATH}/plugins/platforms/qwindows${DEBUG_SUFFIX}.dll"
+                            "$<TARGET_FILE_DIR:${PROJECT_NAME}>/plugins/platforms/" )
     endif ()
     foreach ( QT_LIB ${REQUIRED_LIBS} )
         add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E copy
-                "${QT_INSTALL_PATH}/bin/Qt${QT_VERSION}${QT_LIB}${DEBUG_SUFFIX}.dll"
-                "$<TARGET_FILE_DIR:${PROJECT_NAME}>" )
+                            COMMAND ${CMAKE_COMMAND} -E copy
+                            "${QT_INSTALL_PATH}/bin/Qt${QT_VERSION}${QT_LIB}${DEBUG_SUFFIX}.dll"
+                            "$<TARGET_FILE_DIR:${PROJECT_NAME}>" )
     endforeach ( QT_LIB )
 endif ()
 
 include_directories(
         include
 )
-
-function( gtest_folder name main )
-    aux_source_directory( ${name} DIR_${name} )
-    add_executable( ${name} ${main} ${DIR_${name}} )
-
-    set( INDEX 2 )
-    while ( INDEX LESS ${ARGC} )
-        target_link_libraries( ${name} ${ARGV${INDEX}} )
-        math( EXPR INDEX "${INDEX} + 1" )
-    endwhile ()
-endfunction()
-
-add_subdirectory( test )

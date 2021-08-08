@@ -5,7 +5,13 @@
 #include <QApplication>
 #include <QPushButton>
 
+#include "src/image_processing.h"
+
 int main(int argc, char* argv[]) {
   QApplication app(argc, argv);
+
+  ImageProcessing w;
+  w.show();
+
   return QApplication::exec();
 }
