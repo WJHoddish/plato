@@ -5,12 +5,15 @@
 #include <QApplication>
 #include <QPushButton>
 
+#include "src/dock.h"
 #include "src/image_processing.h"
 
 int main(int argc, char* argv[]) {
   QApplication app(argc, argv);
 
-  ImageProcessing w;
+  //  ImageProcessing w;
+  Dock w;
+
   w.show();
 
   return QApplication::exec();

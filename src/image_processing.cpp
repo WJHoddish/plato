@@ -7,8 +7,11 @@
 
 #include "image_processing.h"
 
+#include <QMainWindow>
 #include <QMessageBox>
 #include <QPushButton>
+#include <QtGui>
+#include <QtWidgets>
 
 #include "ui_image_processing.h"
 
@@ -20,6 +23,7 @@
 ImageProcessing::ImageProcessing(QWidget* parent)
     : QMainWindow(parent)
     , ui(new Ui::ImageProcessing) {
+  setWindowTitle("P2");
   setFixedSize(800, 450);
 
   ui->setupUi(this);
@@ -27,6 +31,18 @@ ImageProcessing::ImageProcessing(QWidget* parent)
   connect(this, SIGNAL(iSignal(int)), this, SLOT(iSlot(int)));
 
   helloWorld();
+
+  //
+
+  QMenu* menu1 = menuBar()->addMenu(tr("菜单栏1"));
+
+  auto* act1 = new QAction(tr("子菜单1"), this);
+  auto* act2 = new QAction(tr("子菜单2"), this);
+
+  connect(act2, SIGNAL(triggered()), this, SLOT(slotButton()));
+
+  act1->setMenu(act2);
+  menu1->addAction(act1);
 }
 
 ImageProcessing::~ImageProcessing() { delete ui; }
@@ -52,7 +68,7 @@ void ImageProcessing::slotButton() {
 
   emit iSignal(5);
 
-  disconnect(this, 0, 0, 0);
+  disconnect(this, nullptr, nullptr, nullptr);
 }
 
 /**
